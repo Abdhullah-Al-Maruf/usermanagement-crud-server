@@ -2,7 +2,7 @@
 require('dotenv').config();
 
 const express = require('express')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 const app = express()
 const port = 5000
@@ -43,6 +43,21 @@ app.get("/users" ,async(req,res)=>{
   res.send(result)
 })
 
+
+//  api for single data
+ app.get("/users/:id", async(req,res)=>{
+  // get the id
+  const id =req.params.id;
+  // write query for find by id
+  const query={
+    _id :new ObjectId(id)
+  }
+  // now find it 
+  const user = await userCollection.findOne(query)
+  // send it to the client side
+  res.send(user)
+
+ })
 // --------------------------------
 
 
