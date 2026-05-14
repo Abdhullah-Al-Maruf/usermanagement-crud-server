@@ -59,7 +59,7 @@ const run = async () => {
 
  // Delete  operation
 
-    app.get("/users/:id",async (req,res)=>{
+    app.delete("/users/:id",async (req,res)=>{
 
       // get the id 
       const id =req.params.id;
