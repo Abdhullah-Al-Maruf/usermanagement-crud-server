@@ -34,13 +34,13 @@ const run = async () => {
     const userCollection = db.collection("users");
 
     //  make a api for the users
-    // Create   operation
+
+    // read   operations
     app.get("/users", async (req, res) => {
       const cursor = userCollection.find({});
       const result = await cursor.toArray();
       res.send(result);
     });
-
 
     //  api for single data
     app.get("/users/:id", async (req, res) => {
@@ -57,24 +57,29 @@ const run = async () => {
     });
     // --------------------------------
 
- // Delete  operation
+    // create operation
 
-    app.delete("/users/:id",async (req,res)=>{
+    app.post("/users", async (req, res) => {
+      const newUser = req.body;
+      console.log('user to be inserted',newUser);
+      const result = await userCollection.insertOne(newUser);
+      res.send(result);
+    });
 
-      // get the id 
-      const id =req.params.id;
+    // Delete  operation
+
+    app.delete("/users/:id", async (req, res) => {
+      // get the id
+      const id = req.params.id;
       // query for find the id
-      const query ={
-        _id :new ObjectId(id),
-      }
+      const query = {
+        _id: new ObjectId(id),
+      };
       // delete the selected user
-      const result = await userCollection.deleteOne(query)
-      // send it 
-      res.send(result)
-    })
-
-
-
+      const result = await userCollection.deleteOne(query);
+      // send it
+      res.send(result);
+    });
 
     await client.db("admin").command({ ping: 1 });
     console.log(
